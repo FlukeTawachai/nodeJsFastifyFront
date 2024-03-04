@@ -1,0 +1,33 @@
+<div class="container mt-3">
+    <div class="d-flex.justify-content.between.flex-md-nowarp.align-items-center.pt-2.pb-2.mb-3.border-bottom">
+        <h1>Home list</h1>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">cGUID</th>
+                    <th scope="col">cPROJ_CODE</th>
+                    <th scope="col">cADDR_NO</th>
+                    <th scope="col">iNO_OF_CAR</th>
+                    <th scope="col">cSTATUS</th>
+                    <th class="text-center" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let home of homeList; let i = index">
+                    <th scope="row">{{home.cGUID}}</th>
+                    <td>{{home.cPROJ_CODE}}</td>
+                    <td>{{home.cADDR_NO}}</td>
+                    <td>{{home.iNO_OF_CAR}}</td>
+                    <td>{{home.cSTATUS}}</td>
+                    <td class="text-center" >
+                        <button class="btn btn-sm btn-primary" routerLink="/Home-edit/{{home.cPROJ_CODE}}/{{home.cADDR_NO}}">Edit</button>
+                        <button class="btn btn-sm btn-danger" (click)="delete(home,i)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
