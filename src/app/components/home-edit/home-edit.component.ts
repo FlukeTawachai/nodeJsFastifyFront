@@ -2,7 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HomeService } from '../../services/home/home.service';
-import { ApiResponse, Home } from '../../models/homeModel';
+import { ApiResponse, CustomerInfo, Home } from '../../models/homeModel';
 
 @Component({
   selector: 'app-home-edit',
@@ -17,6 +17,8 @@ export class HomeEditComponent {
     { value: 'N', title: 'inactive' },
   ];
   homeForm: FormGroup;
+
+  req: any;
   constructor(
     public formBuilder: FormBuilder,
     private router: Router,
@@ -25,37 +27,38 @@ export class HomeEditComponent {
     private homeServices: HomeService
   ) {
     this.homeForm = this.formBuilder.group({
-      cPROJ_CODE: [''],
-      cADDR_NO: [''],
-      iNO_OF_CAR: [''],
-      cCREATE_BY: ['TEST'],
-      cSTATUS: ['Y'],
+      custId: [''],
+      firstName: [''],
+      lastName: [''],
+      phone: [''],
     });
-    this.project = this.activatedRoute.snapshot.paramMap.get('project');
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.homeServices.getHome(this.project, this.id).subscribe((home) => {
+    this.homeServices.getCustomer(this.project, this.id).subscribe((home) => {
       if (home) {
         let data = home as ApiResponse;
-        let homeData = data.result as Home[];
+        let dataList = data.result as CustomerInfo[];
+        this.req = {
+          custId: [dataList[0].custId],
+          firstName: [dataList[0].firstName],
+          lastName: [dataList[0].lastName],
+          phone: [dataList[0].phone],
+        };
         this.homeForm = this.formBuilder.group({
-          cPROJ_CODE: [
-            { value: homeData[0].cPROJ_CODE, disabled: true },
-            Validators.required,
-          ],
-          cADDR_NO: [
-            { value: homeData[0].cADDR_NO, disabled: true },
-            Validators.required,
-          ],
-          iNO_OF_CAR: [homeData[0].iNO_OF_CAR],
-          cSTATUS: ['Y'],
-          cCREATE_BY: ['UPDATE'],
+          custId: [{ value: this.req.custId, disabled: true }],
+          firstName: [this.req.firstName],
+          lastName: [this.req.lastName],
+          phone: [this.req.phone],
         });
       }
     });
   }
 
   onSubmit(): any {
-    this.homeServices.updateHome(this.homeForm.value).subscribe(
+    this.req.firstName = this.homeForm.value.firstName;
+    this.req.lastName = this.homeForm.value.lastName;
+    this.req.phone = this.homeForm.value.phone;
+    // console.log('onSubmit', this.req);
+    this.homeServices.updateCustomer(this.req).subscribe(
       () => {
         console.log('Data update successfully');
         this.ngZone.run(() => this.router.navigateByUrl('/Home-list'));

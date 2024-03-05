@@ -17,15 +17,15 @@ export class HomeAddComponent {
     private homeServices: HomeService
   ) { 
     this.homeForm = this.formBuilder.group({
-      cPROJ_CODE:[''],
-      cADDR_NO:[''],
-      iNO_OF_CAR:[''],
-      cCREATE_BY: ['TEST']
+      custId:[''],
+      firstName:[''],
+      lastName:[''],
+      phone: ['']
     })
   }
 
   onSubmit():any{
-    this.homeServices.addHome(this.homeForm.value)
+    this.homeServices.addCustomer(this.homeForm.value)
     .subscribe(()=>{
       console.log("Data added successfully");
       this.ngZone.run(()=> this.router.navigateByUrl('/Home-list'))

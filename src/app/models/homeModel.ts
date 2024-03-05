@@ -15,3 +15,11 @@ export class Home {
   dUPDATE_DATE!: String;
   cUPDATE_BY!: String;
 }
+
+
+export class CustomerInfo {
+  custId!: String;
+  firstName!: String;
+  lastName!: String;
+  phone!: String;
+}

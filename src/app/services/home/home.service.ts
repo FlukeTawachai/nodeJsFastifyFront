@@ -63,4 +63,36 @@ export class HomeService {
     return this.httpClient
       .post(API_URL, data,{headers: this.httpHeaders});
   }
+
+  getCustomerAll() {
+    return this.httpClient.get(`${this.REST_API}/Customer`);
+  }
+
+  
+  getCustomer(project: String,id: String) {
+    return this.httpClient.get(`${this.REST_API}/Customer/${id}`);
+  }
+
+  // Add
+  addCustomer(data: Home): Observable<any> {
+    let API_URL = `${this.REST_API}/Customer/Create`;
+    return this.httpClient
+      .post(API_URL, data,{headers: this.httpHeaders})
+      .pipe(catchError(this.handleError));
+  }
+
+  // Update
+  updateCustomer(data: Home): Observable<any> {
+    let API_URL = `${this.REST_API}/Customer/Update`;
+    return this.httpClient
+      .post(API_URL, data,{headers: this.httpHeaders})
+      .pipe(catchError(this.handleError));
+  }
+
+  // Delete
+  deleteCustomer(data: Home): Observable<any> {
+    let API_URL = `${this.REST_API}/Customer/Delete`;
+    return this.httpClient
+      .post(API_URL, data,{headers: this.httpHeaders});
+  }
 }
